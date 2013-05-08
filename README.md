@@ -1,5 +1,7 @@
 # Splicer::DnsMadeEasy
 
+[![Code Climate](https://codeclimate.com/github/zippykid/splicer-dns_made_easy.png)](https://codeclimate.com/github/zippykid/splicer-dns_made_easy)
+
 TODO: Write a gem description
 
 ## Installation
