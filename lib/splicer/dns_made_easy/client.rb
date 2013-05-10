@@ -83,7 +83,7 @@ module Splicer
       def execute(args={})
         RestClient::Request.execute(args)
       rescue RestClient::Exception => error
-        raise Splicer::Errors::Error.new(error)
+        raise Splicer::Errors::RequestError.new(error)
       end
 
       # Processes the payload to see if it needs to be turned in to JSON
