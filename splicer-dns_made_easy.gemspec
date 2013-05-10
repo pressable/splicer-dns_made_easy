@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Splicer::DnsMadeEasy::VERSION
   spec.authors       = ["Matthew Johnston"]
   spec.email         = ["warmwaffles@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{The splicer adapter for interacting DnsMadeEasy}
+  spec.summary       = %q{The splicer adapter for interacting DnsMadeEasy}
+  spec.homepage      = "https://github.com/zippykid/dns_made_easy"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -18,7 +18,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency('splicer')
+  spec.add_dependency('splicer', '~> 1.0')
+  spec.add_dependency('rest-client')
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
