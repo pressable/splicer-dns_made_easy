@@ -48,10 +48,10 @@ module Splicer
         domain = find_domain(zone.name)
         return false unless domain.persisted?
 
-        record = find_records(record.name, record.type, domain.id)
+        records = find_records(record.name, record.type, domain.id)
         return false if records.empty?
 
-        delete_record(domain_id, records.first.id)
+        delete_record(domain.id, records.first.id)
       end
 
       def update_record_in_zone(record, zone)
