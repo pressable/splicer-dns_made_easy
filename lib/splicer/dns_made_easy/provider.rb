@@ -30,7 +30,11 @@ module Splicer
       def rewrite_zone(zone)
         Splicer.logger.debug "[SPLICER][DNSMADEEASY] #rewrite_zone zone=#{zone.inspect}"
         domain = find_domain(zone.name)
-        return false unless domain.persisted?
+
+        unless domain.persisted?
+          create_zone(zone)
+          return true
+        end
 
         fetch_records(domain.id).each do |record|
           delete_record(domain.id, record.id)
