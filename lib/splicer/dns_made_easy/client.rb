@@ -85,7 +85,7 @@ module Splicer
         Splicer.logger.debug "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} response=#{response}"
         response
       rescue RestClient::Exception => error
-        Splicer.logger.error "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} response=#{error.response} message=#{error.message}"
+        Splicer.logger.error "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} response=#{error.message}"
         raise Splicer::Errors::RequestError.new(error)
       end
 

@@ -32,12 +32,14 @@ module Splicer
         domain = find_domain(zone.name)
 
         unless domain.persisted?
-          create_zone(zone)
-          return true
+          client.post('dns/managed', name: zone.name)
+          domain = find_domain(zone.name)
         end
 
-        fetch_records(domain.id).each do |record|
-          delete_record(domain.id, record.id)
+        if domain.persisted?
+          fetch_records(domain.id).each do |record|
+            delete_record(domain.id, record.id)
+          end
         end
 
         zone.records.each do |record|
@@ -117,7 +119,8 @@ module Splicer
         else
           [Record.new(response['data'])]
         end
-      rescue Splicer::Errors::RequestError => error
+      rescue Splicer::Errors::Error => error
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #{error}"
         []
       end
 
