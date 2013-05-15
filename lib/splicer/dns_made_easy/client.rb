@@ -81,8 +81,11 @@ module Splicer
       # @raise [Splicer::Errors::Error] when the request fails
       # @return [Hash]
       def execute(args={})
-        RestClient::Request.execute(args)
+        response = RestClient::Request.execute(args)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} response=#{response}"
+        response
       rescue RestClient::Exception => error
+        Splicer.logger.error "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} response=#{error.response} message=#{error.message}"
         raise Splicer::Errors::RequestError.new(error)
       end
 

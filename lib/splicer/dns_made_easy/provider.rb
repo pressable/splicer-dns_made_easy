@@ -11,6 +11,7 @@ module Splicer
       end
 
       def create_zone(zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #create_zone zone=#{zone.inspect}"
         domain = find_domain(zone.name)
         return false if domain.persisted?
 
@@ -22,10 +23,12 @@ module Splicer
       end
 
       def update_zone(zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #update_zone zone=#{zone.inspect}"
         rewrite_zone(zone)
       end
 
       def rewrite_zone(zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #rewrite_zone zone=#{zone.inspect}"
         domain = find_domain(zone.name)
         return false unless domain.persisted?
 
@@ -39,12 +42,14 @@ module Splicer
       end
 
       def delete_zone(zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #delete_zone zone=#{zone.inspect}"
         domain = find_domain(zone.name)
         return false unless domain.persisted?
         client.delete(domain_resource_url(domain.id))
       end
 
       def delete_record_in_zone(record, zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #delete_record_in_zone record=#{record.inspect} zone=#{zone.inspect}"
         domain = find_domain(zone.name)
         return false unless domain.persisted?
 
@@ -55,6 +60,7 @@ module Splicer
       end
 
       def update_record_in_zone(record, zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #update_record_in_zone record=#{record.inspect} zone=#{zone.inspect}"
         domain = find_domain(zone.name)
         return false unless domain.persisted?
 
@@ -65,6 +71,7 @@ module Splicer
       end
 
       def create_record_in_zone(record, zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #create_record_in_zone record=#{record.inspect} zone=#{zone.inspect}"
         domain = find_domain(zone.name)
         return false unless domain.persisted?
 
