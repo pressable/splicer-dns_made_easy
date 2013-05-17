@@ -6,7 +6,7 @@ module Splicer
       MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
       def to_date_header
-        self.utc.strftime("#{DAYS[self.utc.wday]}, %d #{MONTHS[self.utc.month - 1]} %Y %H:%M:%S +0000")
+        self.utc.strftime("#{DAYS[self.utc.wday]}, %d #{MONTHS[self.utc.month - 1]} %Y %H:%M:%S GMT")
       end
     end
 
