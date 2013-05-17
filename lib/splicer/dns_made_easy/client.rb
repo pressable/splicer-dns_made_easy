@@ -82,10 +82,10 @@ module Splicer
       # @return [Hash]
       def execute(args={})
         response = RestClient::Request.execute(args)
-        Splicer.logger.debug "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} response=#{response}"
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} headers=#{args[:headers]} payload=#{args[:payload]} response=#{response}"
         response
       rescue RestClient::Exception => error
-        Splicer.logger.error "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} response=#{error.message}"
+        Splicer.logger.error "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} headers=#{args[:headers]} payload=#{args[:payload]} response=#{error.message}"
         raise Splicer::Errors::RequestError.new(error)
       end
 
