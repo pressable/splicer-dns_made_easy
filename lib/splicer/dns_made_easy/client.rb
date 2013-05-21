@@ -85,7 +85,7 @@ module Splicer
         Splicer.logger.debug "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} headers=#{args[:headers]} payload=#{args[:payload]} response=#{response}"
         response
       rescue RestClient::Exception => error
-        Splicer.logger.error "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} request_headers=#{args[:headers]} payload=#{args[:payload]} response_headers=#{error.response.raw_headers}"
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} request_headers=#{args[:headers]} payload=#{args[:payload]} response_headers=#{error.response.raw_headers}"
         raise Splicer::Errors::RequestError.new(error)
       end
 
