@@ -1,5 +1,5 @@
 module Splicer
   module DnsMadeEasy
-    VERSION = "1.2.6"
+    VERSION = "2.1.0"
   end
 end

@@ -12,10 +12,6 @@ module Splicer
       def provider
         Provider.new(self)
       end
-
-      def client
-        Client.new(key, secret)
-      end
     end
 
   end

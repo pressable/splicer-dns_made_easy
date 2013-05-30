@@ -9,13 +9,11 @@ module Splicer
         @data = params
       end
 
-      def id?
+      def persisted?
         !!@id
       end
+      alias_method :id?, :persisted?
 
-      def persisted?
-        id?
-      end
     end
 
   end

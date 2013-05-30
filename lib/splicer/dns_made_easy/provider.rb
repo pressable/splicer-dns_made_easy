@@ -7,7 +7,7 @@ module Splicer
 
       def initialize(config)
         @config = config
-        @client = config.client
+        @client = Client.new(config.key, config.secret)
       end
 
       def create_zone(zone)
@@ -15,36 +15,12 @@ module Splicer
         domain = find_domain(zone.name)
         return false if domain.persisted?
 
-        client.post('dns/managed', name: zone.name)
+        create_domain(zone)
 
         zone.records.each do |record|
           create_record(domain.id, record)
         end
-      end
-
-      def update_zone(zone)
-        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #update_zone zone=#{zone.inspect}"
-        rewrite_zone(zone)
-      end
-
-      def rewrite_zone(zone)
-        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #rewrite_zone zone=#{zone.inspect}"
-        domain = find_domain(zone.name)
-
-        unless domain.persisted?
-          client.post('dns/managed', name: zone.name)
-          domain = find_domain(zone.name)
-        end
-
-        if domain.persisted?
-          fetch_records(domain.id).each do |record|
-            delete_record(domain.id, record.id)
-          end
-        end
-
-        zone.records.each do |record|
-          create_record(domain.id, record)
-        end
+        true
       end
 
       def delete_zone(zone)
@@ -72,18 +48,19 @@ module Splicer
 
         records = find_records(record.name, record.type, domain.id)
         return false if records.empty?
-
         update_record(domain.id, records.first.id, record)
       end
 
       def create_record_in_zone(record, zone)
         Splicer.logger.debug "[SPLICER][DNSMADEEASY] #create_record_in_zone record=#{record.inspect} zone=#{zone.inspect}"
         domain = find_domain(zone.name)
-        return false unless domain.persisted?
+        unless domain.persisted?
+          create_domain(zone)
+          domain = find_domain(zone.name)
+        end
 
         records = find_records(record.name, record.type, domain.id)
         return false unless records.empty?
-
         create_record(domain.id, record)
       end
 
@@ -92,7 +69,7 @@ module Splicer
       # @param [Integer] domain_id
       # @return [Array<Splicer::DnsMadeEasy::Record>]
       def fetch_records(domain_id)
-        response = JSON.parse(client.get(records_resource_url(domain_id)))
+        response = JSON.parse(client.get(record_url(domain_id)))
         list = []
         response['data'].each do |r|
           list << Record.new(r)
@@ -103,13 +80,14 @@ module Splicer
       end
 
       # @param [Integer] domain_id
+      # @param [String] type
       # @return [Array<Splicer::DnsMadeEasy::Record>]
       def find_records(name, type, domain_id)
         payload = {
           type: type,
           recordName: name ? name : ''
         }
-        response = JSON.parse(client.get(records_resource_url(domain_id), payload))
+        response = JSON.parse(client.get(record_url(domain_id), payload))
         if response['data'].is_a?(Array)
           list = []
           response['data'].each do |params|
@@ -120,15 +98,20 @@ module Splicer
           [Record.new(response['data'])]
         end
       rescue Splicer::Errors::Error => error
-        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #{error}"
         []
+      end
+
+      def create_domain(zone)
+        client.post('dns/managed', name: zone.name)
       end
 
       # @param [Integer] domain_id
       # @param [Splicer::Records::Record] splicer_record
       # @return [String]
       def create_record(domain_id, splicer_record)
-        client.post(records_resource_url(domain_id), record_resource_payload(splicer_record))
+        url = record_url(domain_id)
+        payload = record_payload(splicer_record)
+        client.post(url, payload)
       end
 
       # @param [Integer] record_id
@@ -136,19 +119,23 @@ module Splicer
       # @param [Splicer::Records::Record] splicer_record
       # @return [String]
       def update_record(domain_id, record_id, splicer_record)
-        client.put(records_resource_url(domain_id, record_id), record_resource_payload(splicer_record).merge({id: record_id}))
+        url = record_url(domain_id, record_id)
+        payload = record_payload(splicer_record).merge({id: record_id})
+        client.put(url, payload)
       end
 
       # @param [Integer] record_id
       # @param [Integer] domain_id
       # @return [String]
       def delete_record(domain_id, record_id)
-        client.delete(records_resource_url(domain_id, record_id), id: record_id)
+        url = record_url(domain_id, record_id)
+        payload = { id: record_id }
+        client.delete(url, payload)
       end
 
       # @param [Integer] domain_id
       # @return [String]
-      def records_resource_url(domain_id, record_id=nil)
+      def record_url(domain_id, record_id=nil)
         if record_id
           "dns/managed/#{domain_id}/records/#{record_id}"
         else
@@ -172,7 +159,7 @@ module Splicer
       # Returns a hash for the record data
       # @param [Splicer::Records::Record] record
       # @return [Hash]
-      def record_resource_payload(record)
+      def record_payload(record)
         payload = {
           type: record.type,
           gtdLocation: 'DEFAULT',
