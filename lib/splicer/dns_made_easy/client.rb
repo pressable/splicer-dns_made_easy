@@ -11,11 +11,18 @@ module Splicer
     #
     # @author Matthew A. Johnston
     class Client
+
+      DEFAULT_END_POINTS = {
+        :sandbox => "https://api.sandbox.dnsmadeeasy.com/V2.0",
+        :live    => "https://api.dnsmadeeasy.com/V2.0"
+      }
+
       # @param [String] key
       # @param [String] secret
-      def initialize(key, secret)
+      def initialize(key, secret, api_mode = :live)
         @key = key
         @secret = secret
+        @api_mode = api_mode
       end
 
       # @param [String] resource the resource path
@@ -116,7 +123,11 @@ module Splicer
       end
 
       def resource_url(resource)
-        ["https://api.dnsmadeeasy.com/V2.0", resource.gsub(/^\//,'')].join('/')
+        [base_url, resource.gsub(/^\//,'')].join('/')
+      end
+
+      def base_url
+        DEFAULT_END_POINTS[@api_mode]
       end
 
     end
