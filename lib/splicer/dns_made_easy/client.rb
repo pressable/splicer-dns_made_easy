@@ -13,9 +13,10 @@ module Splicer
     class Client
       # @param [String] key
       # @param [String] secret
-      def initialize(key, secret)
+      def initialize(key, secret, environment = :live)
         @key = key
         @secret = secret
+        @environment = environment
       end
 
       # @param [String] resource the resource path
@@ -116,7 +117,15 @@ module Splicer
       end
 
       def resource_url(resource)
-        ["https://api.dnsmadeeasy.com/V2.0", resource.gsub(/^\//,'')].join('/')
+        [base_url, resource.gsub(/^\//,'')].join('/')
+      end
+
+      def base_url
+        if @environment == :live
+          "https://api.dnsmadeeasy.com/V2.0"
+        else
+          "https://api.sandbox.dnsmadeeasy.com/V2.0"
+        end
       end
 
     end
