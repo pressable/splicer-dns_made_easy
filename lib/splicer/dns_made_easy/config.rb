@@ -2,12 +2,12 @@ module Splicer
   module DnsMadeEasy
 
     class Config
-      attr_reader :key, :secret, :environment
+      attr_reader :key, :secret, :api_mode
 
-      def initialize(key, secret, environment = :live)
+      def initialize(key, secret, api_mode = :live)
         @key = key
         @secret = secret
-        @environment = environment
+        @api_mode = api_mode
       end
 
       def provider

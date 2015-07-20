@@ -7,7 +7,7 @@ module Splicer
 
       def initialize(config)
         @config = config
-        @client = Client.new(config.key, config.secret, config.environment)
+        @client = Client.new(config.key, config.secret, config.api_mode)
       end
 
       def create_zone(zone)
