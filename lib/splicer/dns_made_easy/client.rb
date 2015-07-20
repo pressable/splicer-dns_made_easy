@@ -19,10 +19,11 @@ module Splicer
 
       # @param [String] key
       # @param [String] secret
-      def initialize(key, secret, api_mode = :live)
+      def initialize(key, secret, options = {})
         @key = key
         @secret = secret
-        @api_mode = api_mode
+        @api_mode = options[:api_mode] || :live
+        @use_ssl = options[:use_ssl]
       end
 
       # @param [String] resource the resource path
@@ -127,7 +128,11 @@ module Splicer
       end
 
       def base_url
-        DEFAULT_END_POINTS[@api_mode]
+        if @use_ssl
+          DEFAULT_END_POINTS[@api_mode]
+        else
+          DEFAULT_END_POINTS[@api_mode].sub('https', 'http')
+        end
       end
 
     end
