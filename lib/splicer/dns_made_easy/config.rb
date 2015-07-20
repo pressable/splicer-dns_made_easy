@@ -4,9 +4,10 @@ module Splicer
     class Config
       attr_reader :key, :secret
 
-      def initialize(key, secret)
+      def initialize(key, secret, environment = :live)
         @key = key
         @secret = secret
+        @environment = environment
       end
 
       def provider
