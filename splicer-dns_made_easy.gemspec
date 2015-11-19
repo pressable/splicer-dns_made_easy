@@ -6,8 +6,8 @@ require 'splicer/dns_made_easy/version'
 Gem::Specification.new do |spec|
   spec.name          = "splicer-dns_made_easy"
   spec.version       = Splicer::DnsMadeEasy::VERSION
-  spec.authors       = ["Matthew Johnston"]
-  spec.email         = ["warmwaffles@gmail.com"]
+  spec.authors       = ["Matthew Johnston", "Joshua Stowers"]
+  spec.email         = ["warmwaffles@gmail.com", "joshua@pressable.com"]
   spec.description   = %q{The splicer adapter for interacting DnsMadeEasy}
   spec.summary       = %q{The splicer adapter for interacting DnsMadeEasy}
   spec.homepage      = "https://github.com/zippykid/dns_made_easy"
