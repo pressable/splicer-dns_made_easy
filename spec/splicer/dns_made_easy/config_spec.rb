@@ -6,11 +6,11 @@ describe Splicer::DnsMadeEasy::Config do
   describe '#initialize' do
     subject { config }
 
-    it "should find key to be equal to 'key'" do
+    it "should find :key to be equal to 'key'" do
       expect(config.key).to eq('key')
     end
 
-    it "should find secret to be equal to 'secret'" do
+    it "should find :secret to be equal to 'secret'" do
       expect(config.secret).to eq('secret')
     end
   end
