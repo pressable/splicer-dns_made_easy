@@ -14,7 +14,7 @@ describe Splicer::DnsMadeEasy::Provider do
         provider.stub(:find_domain).and_return(domain)
         provider.stub(:create_domain).and_raise(Splicer::Errors::RequestError)
       end
-      it { should be_false }
+      it { should be_falsy }
     end
 
     context 'when the domain exists' do
@@ -23,7 +23,7 @@ describe Splicer::DnsMadeEasy::Provider do
         provider.stub(:create_domain).and_return(true)
         provider.stub(:create_record).and_return(true)
       end
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 
