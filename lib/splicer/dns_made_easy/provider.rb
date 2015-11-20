@@ -64,6 +64,15 @@ module Splicer
         create_record(domain.id, record)
       end
 
+      def get_records_for(zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #get_records_for record=#{record.inspect} zone=#{zone.inspect}"
+        domain = find_domain(zone.name)
+        return false unless domain.persisted?
+
+        records = find_records(record.name, record.type, domain.id)
+        return false if records.empty?
+      end
+
       private
 
       # @param [Integer] domain_id
