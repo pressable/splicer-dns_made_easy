@@ -68,9 +68,7 @@ module Splicer
         Splicer.logger.debug "[SPLICER][DNSMADEEASY] #get_records_for zone=#{zone.inspect}"
         domain = find_domain(zone.name)
         return false unless domain.persisted?
-
-        records = fetch_records(domain.id)
-        false if records.empty?
+        fetch_records(domain.id)
       end
 
       private
