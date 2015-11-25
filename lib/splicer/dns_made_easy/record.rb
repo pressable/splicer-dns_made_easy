@@ -2,9 +2,9 @@ module Splicer
   module DnsMadeEasy
 
     class Record
-      attr_reader :name, :value, :id, :type, :dynamicDns,
-                  :failed, :gtdLocation, :hardLink, :ttl,
-                  :failover, :monitor, :sourceId, :source, :data
+      attr_accessor :name, :value, :id, :type, :dynamicDns,
+                    :failed, :gtdLocation, :hardLink, :ttl,
+                    :failover, :monitor, :sourceId, :source, :data
 
       def initialize(params={})
         @id = params['id']
