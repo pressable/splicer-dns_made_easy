@@ -1,13 +1,6 @@
 require 'spec_helper'
 
 describe Splicer::DnsMadeEasy::Provider do
-  def params
-    {   'id' => 1,
-        'type' => 'A',
-        'value' => '127.0.0.1',
-        'ttl' => 3600   }
-  end
-
   let(:config) { Splicer::DnsMadeEasy::Config.new('key','secret') }
   let(:provider) { Splicer::DnsMadeEasy::Provider.new(config) }
   let(:domain) { Splicer::DnsMadeEasy::Domain.new({'id' => 1}) }
