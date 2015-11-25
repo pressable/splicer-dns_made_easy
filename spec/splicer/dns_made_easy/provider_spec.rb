@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Splicer::DnsMadeEasy::Provider do
+  def params
+    {   'id' => 1,
+        'type' => 'A',
+        'value' => '127.0.0.1',
+        'ttl' => 3600   }
+  end
+
   let(:config) { Splicer::DnsMadeEasy::Config.new('key','secret') }
   let(:provider) { Splicer::DnsMadeEasy::Provider.new(config) }
   let(:domain) { Splicer::DnsMadeEasy::Domain.new({'id' => 1}) }
@@ -52,5 +59,13 @@ describe Splicer::DnsMadeEasy::Provider do
     let(:record) { Splicer::Records::ARecord.new(nil, '127.0.0.1') }
     let(:zone) { Splicer::Zone.new('rspectesting.com') }
     subject { provider.create_record_in_zone(record, zone) }
+  end
+
+
+  describe '#get_records_for' do
+    let(:record) { Splicer::Records::ARecord.new(nil, '127.0.0.1') }
+    let(:zone) { Splicer::Zone.new('rspectesting.com') }
+    let(:records) { provider.create_record_in_zone(record, zone) }
+    subject { provider.get_records_for(zone) }
   end
 end
