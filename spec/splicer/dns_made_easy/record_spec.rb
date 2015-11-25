@@ -4,10 +4,10 @@ describe Splicer::DnsMadeEasy::Record do
   describe '#initialize' do
     def params
       {
-          'id' => 1,
-          'type' => 'A',
-          'value' => '127.0.0.1',
-          'ttl' => 3600
+        'id' => 1,
+        'type' => 'A',
+        'value' => '127.0.0.1',
+        'ttl' => 3600
       }
     end
     subject { Splicer::DnsMadeEasy::Record.new(params) }
