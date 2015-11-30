@@ -14,7 +14,7 @@ describe Splicer::DnsMadeEasy::Provider do
         provider.stub(:find_domain).and_return(domain)
         provider.stub(:create_domain).and_raise(Splicer::Errors::RequestError)
       end
-      it { should be_false }
+      it { should be_falsy }
     end
 
     context 'when the domain exists' do
@@ -23,7 +23,7 @@ describe Splicer::DnsMadeEasy::Provider do
         provider.stub(:create_domain).and_return(true)
         provider.stub(:create_record).and_return(true)
       end
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 
@@ -52,5 +52,13 @@ describe Splicer::DnsMadeEasy::Provider do
     let(:record) { Splicer::Records::ARecord.new(nil, '127.0.0.1') }
     let(:zone) { Splicer::Zone.new('rspectesting.com') }
     subject { provider.create_record_in_zone(record, zone) }
+  end
+
+
+  describe '#get_records_for' do
+    let(:record) { Splicer::Records::ARecord.new(nil, '127.0.0.1') }
+    let(:zone) { Splicer::Zone.new('rspectesting.com') }
+    let(:records) { provider.create_record_in_zone(record, zone) }
+    subject { provider.get_records_for(zone) }
   end
 end
