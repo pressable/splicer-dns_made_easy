@@ -14,11 +14,6 @@ module Splicer
         @data = params
       end
 
-      def add_attribute(attribute, value)
-        attribute = "@#{attribute}"
-        self.instance_variable_set(attribute, value)
-      end
-
       def persisted?
         !!@id
       end

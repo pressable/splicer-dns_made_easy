@@ -82,12 +82,12 @@ module Splicer
         @records = []
         records.each do |record|
           new_record = Record.new
-          record.each {|attribute, type| new_record.add_attribute(attribute, type)}
+          record.each {|attribute, type| new_record.send(:"#{attribute}=", type)}
           @records << new_record
         end
         @records
       rescue
-        @records = []
+        []
       end
 
       # @param [Integer] domain_id
