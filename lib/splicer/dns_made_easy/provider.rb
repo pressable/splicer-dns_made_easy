@@ -3,7 +3,7 @@ module Splicer
 
     # @author Matthew A. Johnston <warmwaffles@gmail.com>
     class Provider < Splicer::Provider
-      attr_reader :client
+      attr_reader :client, :records
 
       def initialize(config)
         @config = config
@@ -64,18 +64,29 @@ module Splicer
         create_record(domain.id, record)
       end
 
+      def get_records_for(zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #get_records_for zone=#{zone.inspect}"
+        domain = find_domain(zone.name)
+        return false unless domain.persisted?
+        fetch_records(domain.id)
+      end
+
       private
 
       # @param [Integer] domain_id
       # @return [Array<Splicer::DnsMadeEasy::Record>]
       def fetch_records(domain_id)
-        response = JSON.parse(client.get(record_url(domain_id)))
-        list = []
-        response['data'].each do |r|
-          list << Record.new(r)
+        records_call = client.get(record_url(domain_id))
+        records = JSON.parse(records_call)['data']
+
+        @records = []
+        records.each do |record|
+          new_record = Record.new
+          record.each {|attribute, type| new_record.send(:"#{attribute}=", type)}
+          @records << new_record
         end
-        list
-      rescue Splicer::Errors::RequestError => error
+        @records
+      rescue
         []
       end
 
@@ -85,7 +96,7 @@ module Splicer
       def find_records(name, type, domain_id)
         payload = {
           type: type,
-          recordName: name ? name : ''
+          recordName: name || ''
         }
         response = JSON.parse(client.get(record_url(domain_id), payload))
         if response['data'].is_a?(Array)
