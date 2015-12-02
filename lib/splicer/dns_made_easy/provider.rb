@@ -33,7 +33,7 @@ module Splicer
       def delete_record_in_zone(record, zone)
         Splicer.logger.debug "[SPLICER][DNSMADEEASY] #delete_record_in_zone record=#{record.inspect} zone=#{zone.inspect}"
         domain = find_domain(zone.name)
-        return false unless domain.persisted?
+        return [] unless domain.persisted?
 
         records = find_records(record.name, record.type, domain.id)
         return false if records.empty?
