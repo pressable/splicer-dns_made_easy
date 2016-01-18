@@ -6,8 +6,8 @@ require 'splicer/dns_made_easy/version'
 Gem::Specification.new do |spec|
   spec.name          = "splicer-dns_made_easy"
   spec.version       = Splicer::DnsMadeEasy::VERSION
-  spec.authors       = ["Matthew Johnston", "Joshua Stowers"]
-  spec.email         = ["warmwaffles@gmail.com", "joshua@pressable.com"]
+  spec.authors       = ["Matthew Johnston", "Joshua Stowers", "Oliver Garcia"]
+  spec.email         = ["warmwaffles@gmail.com", "joshua@pressable.com", "oliver@pressable.com"]
   spec.description   = %q{The Splicer adapter for interacting DnsMadeEasy}
   spec.summary       = %q{Use this gem together with Splicer if you are using multiple DNS providers, and want a unified interface to manage each of them simultaneously}
   spec.homepage      = "https://github.com/pressable/splicer-dns_made_easy"
