@@ -56,9 +56,25 @@ describe Splicer::DnsMadeEasy::Provider do
 
 
   describe '#get_records_for' do
-    let(:record) { Splicer::Records::ARecord.new(nil, '127.0.0.1') }
+    let(:params) { { 'id' => 1, 'type' => 'A', 'value' => '127.0.0.1', 'ttl' => 3600 } }
+    let(:records) { [Splicer::DnsMadeEasy::Record.new(params)] }
     let(:zone) { Splicer::Zone.new('rspectesting.com') }
-    let(:records) { provider.create_record_in_zone(record, zone) }
     subject { provider.get_records_for(zone) }
+
+    context 'when the domain exists' do
+      before do
+        provider.stub(:find_domain).and_return(domain)
+        provider.stub(:fetch_records).and_return(records)
+      end
+      it { is_expected.to eq(records) }
+    end
+
+    context 'when the domain does not exist' do
+      before do
+        provider.stub(:find_domain).and_return(Splicer::DnsMadeEasy::Domain.new)
+      end
+
+      it { is_expected.to eq([]) }
+    end
   end
 end
