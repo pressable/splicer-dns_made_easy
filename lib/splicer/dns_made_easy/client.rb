@@ -94,7 +94,15 @@ module Splicer
         response
       rescue RestClient::Exception => error
         Splicer.logger.debug "[SPLICER][DNSMADEEASY] method=#{args[:method]} url=#{args[:url]} request_headers=#{args[:headers]} payload=#{args[:payload]} response_headers=#{error.response.raw_headers}"
-        raise Splicer::Errors::RequestError.new(error)
+        raise Splicer::Errors::RequestError.new(error, {
+          request: {
+            method: args[:method],
+            url: args[:url],
+            headers: args[:headers],
+            payload: args[:payload]
+          },
+          response: error.response
+        })
       end
 
       # Processes the payload to see if it needs to be turned in to JSON
