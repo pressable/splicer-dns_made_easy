@@ -101,7 +101,10 @@ module Splicer
             headers: args[:headers],
             payload: args[:payload]
           },
-          response: error.response
+          response: {
+            message: error.response,
+            headers: error.response.raw_headers
+          }
         })
       end
 
