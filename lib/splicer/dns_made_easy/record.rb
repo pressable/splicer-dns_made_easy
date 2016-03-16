@@ -4,7 +4,8 @@ module Splicer
     class Record
       attr_accessor :name, :value, :id, :type, :dynamicDns,
                     :failed, :gtdLocation, :hardLink, :ttl,
-                    :failover, :monitor, :sourceId, :source, :data
+                    :failover, :monitor, :sourceId, :source,
+                    :data, :mxLevel
 
       def initialize(params={})
         @id = params['id']
