@@ -64,6 +64,11 @@ module Splicer
         create_record(domain.id, record)
       end
 
+      def get_zone_for(zone)
+        Splicer.logger.debug "[SPLICER][DNSMADEEASY] #get_zone_for zone=#{zone.inspect}"
+        find_domain(zone.name)
+      end
+
       def get_records_for(zone)
         Splicer.logger.debug "[SPLICER][DNSMADEEASY] #get_records_for zone=#{zone.inspect}"
         domain = find_domain(zone.name)
