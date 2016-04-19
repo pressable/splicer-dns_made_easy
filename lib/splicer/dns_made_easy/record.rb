@@ -2,10 +2,8 @@ module Splicer
   module DnsMadeEasy
 
     class Record
-      attr_accessor :name, :value, :id, :type, :dynamicDns,
-                    :failed, :gtdLocation, :hardLink, :ttl,
-                    :failover, :monitor, :sourceId, :source,
-                    :data, :mxLevel
+      attr_accessor :data, :description, :dynamicDns, :failed, :failover, :gtdLocation, :hardLink, :id, :keywords,
+                    :monitor, :mxLevel, :name, :redirectType, :source, :sourceId, :title, :ttl, :type, :value
 
       def initialize(params={})
         @id = params['id']
