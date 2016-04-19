@@ -87,11 +87,14 @@ module Splicer
         @records = []
         records.each do |record|
           new_record = Record.new
-          record.each {|attribute, type| new_record.send(:"#{attribute}=", type)}
+          record.each do |attribute, type|
+            new_record.send(:"#{attribute}=", type) if new_record.respond_to?(:"#{attribute}=")
+          end
           @records << new_record
         end
         @records
-      rescue
+      rescue => error
+        Splicer.logger.error "[SPLICER][DNSMADEEASY] #fetch_records domain_id=#{domain_id} #{error.message}"
         []
       end
 
@@ -114,6 +117,7 @@ module Splicer
           [Record.new(response['data'])]
         end
       rescue Splicer::Errors::Error => error
+        Splicer.logger.error "[SPLICER][DNSMADEEASY] #find_records name=#{name} type=#{type} domain_id=#{domain_id} #{error.message}"
         []
       end
 
