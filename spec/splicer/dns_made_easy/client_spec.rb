@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Splicer::DnsMadeEasy::Client do
   let(:client) { Splicer::DnsMadeEasy::Client.new('key','secret') }
   describe '#initialize' do
-    it "should initialize" do
+    it 'should initialize' do
       expect(client).to be_a(Splicer::DnsMadeEasy::Client)
     end
   end
@@ -17,7 +17,7 @@ describe Splicer::DnsMadeEasy::Client do
     end
 
     context 'when DNS Made Easy returns with an error' do
-      before { client.stub(:execute).and_raise(Splicer::Errors::RequestError) }
+      before { client.stub(:execute).and_raise(Splicer::Errors::RequestError.new('error')) }
       it 'should raise a Splicer::Errors::RequestError' do
         expect { subject }.to raise_error(Splicer::Errors::RequestError)
       end
@@ -33,7 +33,7 @@ describe Splicer::DnsMadeEasy::Client do
     end
 
     context 'when DNS Made Easy returns with an error' do
-      before { client.stub(:execute).and_raise(Splicer::Errors::RequestError) }
+      before { client.stub(:execute).and_raise(Splicer::Errors::RequestError.new('error')) }
       it 'should raise a Splicer::Errors::RequestError' do
         expect { subject }.to raise_error(Splicer::Errors::RequestError)
       end
@@ -49,7 +49,7 @@ describe Splicer::DnsMadeEasy::Client do
     end
 
     context 'when DNS Made Easy returns with an error' do
-      before { client.stub(:execute).and_raise(Splicer::Errors::RequestError) }
+      before { client.stub(:execute).and_raise(Splicer::Errors::RequestError.new('error')) }
       it 'should raise a Splicer::Errors::RequestError' do
         expect { subject }.to raise_error(Splicer::Errors::RequestError)
       end
@@ -65,7 +65,7 @@ describe Splicer::DnsMadeEasy::Client do
     end
 
     context 'when DNS Made Easy returns with an error' do
-      before { client.stub(:execute).and_raise(Splicer::Errors::RequestError) }
+      before { client.stub(:execute).and_raise(Splicer::Errors::RequestError.new('error')) }
       it 'should raise a Splicer::Errors::RequestError' do
         expect { subject }.to raise_error(Splicer::Errors::RequestError)
       end
