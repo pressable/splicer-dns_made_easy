@@ -93,9 +93,6 @@ module Splicer
           @records << new_record
         end
         @records
-      rescue => error
-        Splicer.logger.error "[SPLICER][DNSMADEEASY] #fetch_records domain_id=#{domain_id} #{error.message}"
-        []
       end
 
       # @param [Integer] domain_id
@@ -116,9 +113,6 @@ module Splicer
         else
           [Record.new(response['data'])]
         end
-      rescue Splicer::Errors::Error => error
-        Splicer.logger.error "[SPLICER][DNSMADEEASY] #find_records name=#{name} type=#{type} domain_id=#{domain_id} #{error.message}"
-        []
       end
 
       def create_domain(zone)
@@ -173,7 +167,7 @@ module Splicer
         response = JSON.parse(client.get("dns/managed/id/#{name}"))
         Domain.new(response)
       rescue Splicer::Errors::RequestError => error
-        Domain.new
+        Domain.new({error: error.data})
       end
 
       # Returns a hash for the record data
@@ -183,7 +177,7 @@ module Splicer
         payload = {
           type: record.type,
           gtdLocation: 'DEFAULT',
-          name: record.name ? record.name : '',
+          name: record.name || '',
           ttl: record.ttl
         }
         case record
